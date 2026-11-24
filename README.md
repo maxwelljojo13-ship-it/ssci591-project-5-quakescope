@@ -87,7 +87,7 @@ Only application files and public datasets are in `dist`. `_headers` configures 
 
 Automated checks cover the source records' structure and time range, non-overlapping week and depth boundaries, combined filters, search, sorting and CSV escaping. Local desktop checks verify map rendering, event popups and empty-state behavior. Phone viewport emulation is a layout check; it does **not** replace the required physical phone/cellular and other-person tests.
 
-Before submission: verify the public production URL in a private window; capture the actual Cloudflare plan/usage screen; open the live site on a phone with Wi-Fi off; ask one other person to open it; record and fix any observed issue. Keep the app live until grades are posted.
+Validation completed November 24, 2026: the live map loaded 623 records and the M7+ filter returned two events with no browser errors. The student confirmed that phone access with Wi-Fi off, another-person access with event details, and computer private-window access all worked. Device/browser models were not supplied. The actual Cloudflare account showed the Free plan and zero Workers usage; these counters do not measure static Pages visits. An earlier phone-layout issue was corrected with fractional zoom and automatic map refitting. All 16 published source files were downloaded from GitHub and matched the local source byte for byte before this testing note was updated. Keep the app live until grades are posted.
 
 ## Credits
 
