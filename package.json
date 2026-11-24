@@ -1,0 +1,1 @@
+{"name":"quakescope-project5","version":"1.0.0","private":true,"type":"module","scripts":{"test":"node --test scripts/logic.test.mjs"},"description":"A static Web GIS application for SSCI 591 Project 5"}
