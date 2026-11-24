@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore January 2024 global earthquakes with an interactive map, magnitude and depth filters, and public USGS data.">
+  <title>QuakeScope | Global Earthquake Atlas</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="vendor/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="vendor/leaflet.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+<a class="skip" href="#filters">Skip to filters</a>
+<header class="topbar">
+  <div class="brand"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15"/><circle cx="18" cy="18" r="8"/><circle cx="18" cy="18" r="2"/></svg><span>QuakeScope<small>GLOBAL EARTHQUAKE ATLAS</small></span></div>
+  <div class="header-meta"><span class="archive">ARCHIVED DATA</span><span>January 2024 · UTC</span><button type="button" class="text-button" id="about-button">About &amp; sources</button></div>
+</header>
+<main class="workspace">
+  <section class="filters panel" id="filters" aria-labelledby="main-title">
+    <p class="eyebrow">ONE MONTH. A GLOBAL VIEW.</p>
+    <h1 id="main-title">Global earthquakes</h1>
+    <p class="intro">Explore where earthquakes occurred and how their magnitude and depth vary.</p>
+    <div class="stats" aria-live="polite"><div><strong id="event-count">—</strong><span>matching events</span></div><div><strong id="max-mag">—</strong><span>largest magnitude</span></div></div>
+    <form id="filter-form">
+      <div class="filter-pair"><label>Minimum magnitude<select id="magnitude" name="magnitude"><option value="4.5">M 4.5 and above</option><option value="5">M 5.0 and above</option><option value="6">M 6.0 and above</option><option value="7">M 7.0 and above</option></select></label>
+      <label>Depth<select id="depth" name="depth"><option value="all">All depths</option><option value="shallow">Shallow · &lt; 70 km</option><option value="intermediate">Intermediate · 70–300 km</option><option value="deep">Deep · &gt; 300 km</option></select></label></div>
+      <label>Date range<select id="period" name="period"><option value="all">January 1–31, 2024</option><option value="1:7">January 1–7</option><option value="8:14">January 8–14</option><option value="15:21">January 15–21</option><option value="22:31">January 22–31</option></select></label>
+      <label>Search a place<input id="search" name="search" type="search" placeholder="Japan, Chile, Alaska" autocomplete="off"></label>
+      <div class="filter-actions"><button type="reset" class="secondary">Reset filters</button><button type="button" class="primary" id="fit-results">Fit results</button></div>
+    </form>
+    <p id="load-status" role="status" class="status">Loading the USGS archive…</p>
+    <button type="button" id="retry" hidden class="secondary">Retry loading</button>
+  </section>
+  <section class="map-panel" aria-label="Interactive earthquake map">
+    <div id="map" aria-label="Map of earthquake locations. Use the event list for keyboard access."></div>
+    <div class="map-caption"><strong>JAN 2024</strong><span>USGS earthquake locations · M 4.5+</span></div>
+    <button id="world-view" type="button" class="map-button">World view</button>
+    <aside class="legend" aria-label="Map legend"><strong>DEPTH</strong><span><i class="dot shallow"></i>&lt; 70 km</span><span><i class="dot intermediate"></i>70–300 km</span><span><i class="dot deep"></i>&gt; 300 km</span><span class="size-note">Larger circle = larger magnitude</span></aside>
+    <p class="map-hint">Drag to pan · Use + / − to zoom · Select an event</p>
+  </section>
+  <section class="results panel" aria-labelledby="results-title">
+    <div class="results-header"><h2 id="results-title">Earthquake catalog</h2><label class="sort-label"><span class="sr-only">Sort events</span><select id="sort"><option value="magnitude">Largest first</option><option value="latest">Latest first</option></select></label></div>
+    <div id="event-list" class="event-list"></div>
+    <button type="button" id="show-more" class="secondary full" hidden>Show more events</button>
+    <div class="catalog-footer"><span id="list-count">Waiting for data</span><button type="button" id="download" class="text-button" disabled>Download filtered CSV</button></div>
+  </section>
+</main>
+<footer class="site-footer"><span>Data: <a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank" rel="noopener noreferrer">USGS ComCat</a> · Basemap: <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener noreferrer">Natural Earth</a> · Map: <a href="https://leafletjs.com/" target="_blank" rel="noopener noreferrer">Leaflet</a></span><span>SSCI 591 · Project 5 · Historical exploration, not a live alert service</span></footer>
+<dialog id="about-dialog" aria-labelledby="about-title"><div class="dialog-top"><h2 id="about-title">About QuakeScope</h2><button type="button" id="close-about" aria-label="Close about dialog">×</button></div>
+  <p>Students use QuakeScope to explore the location, magnitude and depth of global earthquakes in January 2024.</p>
+  <p>This is an archived catalog, not a real-time monitoring or warning service. It includes USGS events classified as earthquakes with a reported magnitude of at least 4.5, from January 1 at 00:00 UTC through January 31, 2024. Catalog values may be revised.</p>
+  <p>Circle color represents depth below the surface. Circle size is a visual cue for reported magnitude; it does not represent energy, damage or affected area. The country basemap is generalized and is intended for global orientation.</p>
+  <p>All map assets and data load from this website. Filtering, sorting and map rendering run in your browser. There are no API keys, account requirements, analytics trackers or location requests.</p>
+  <p><a href="data/earthquakes.geojson" download>Download the GeoJSON dataset</a> · <a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank" rel="noopener noreferrer">USGS API documentation</a> · <a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener noreferrer">Natural Earth public domain terms</a> · <a href="vendor/LICENSE-Leaflet.txt">Leaflet license</a></p>
+  <p class="credit">AI assistance: OpenAI Codex helped with application code, interface design, testing and documentation. Data and geographic boundaries come from the credited sources.</p>
+</dialog>
+<noscript><p class="no-script">Enable JavaScript to use the interactive map. You can still <a href="data/earthquakes.geojson">download the earthquake dataset</a>.</p></noscript>
+</body>
+</html>
